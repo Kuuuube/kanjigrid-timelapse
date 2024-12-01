@@ -22,7 +22,7 @@ async def generate_images():
         filename = str(i).zfill(len(str(json_array_length)))
         await page.setContent(html_string)
         await page.screenshot({'path': images_output_directory + "/" + filename + "." + images_output_format, 'fullPage': True})
-        print("Generated " + filename + "/" + str(json_array_length) - 1)
+        print("Generated " + filename + "/" + str(json_array_length - 1))
 
     await browser.close()
 
@@ -43,6 +43,8 @@ def resize_images():
         image_resized = image.crop((0, 0, highest_width, highest_height))
         image_resized.save(images_output_directory + "/" + image_file, "PNG")
 
+print("Generating images")
 asyncio.run(generate_images())
 
+print("Resizing images")
 resize_images()
