@@ -6,7 +6,9 @@ async def main():
     browser = await pyppeteer.launch()
     page = await browser.newPage()
 
-    json_array = json.loads(open("test_json.json", "r").read())
+    json_path = input("Input JSON path: ")
+
+    json_array = json.loads(open(json_path, "r").read())
 
     for i, html_string in enumerate(json_array):
         await page.setContent(html_string)
