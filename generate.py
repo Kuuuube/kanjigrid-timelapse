@@ -19,9 +19,10 @@ async def generate_images():
 
     json_array_length = len(json_array)
     for i, html_string in enumerate(json_array):
+        filename = str(i).zfill(len(str(json_array_length)))
         await page.setContent(html_string)
-        await page.screenshot({'path': images_output_directory + "/" + str(i) + "." + images_output_format, 'fullPage': True})
-        print("Generated " + str(i) + "/" + str(json_array_length))
+        await page.screenshot({'path': images_output_directory + "/" + filename + "." + images_output_format, 'fullPage': True})
+        print("Generated " + filename + "/" + str(json_array_length) - 1)
 
     await browser.close()
 
