@@ -3,16 +3,32 @@ import pyppeteer
 import json
 import os
 import PIL.Image
+import cv2
+import configparser
 
-images_output_directory = "images"
-images_output_format = "png"
+def maybe_read_config(maybe, section, name = None):
+    try:
+        config = configparser.RawConfigParser()
+        config.read(os.path.dirname(__file__) + "/" + "config.ini", encoding="utf-8")
 
-async def generate_images():
+        if name == None:
+            return config[section]
+
+        return config[section][name]
+
+    except Exception as e:
+        print(e)
+        return maybe
+
+images_output_directory = maybe_read_config("images", "config", "images_output_directory")
+images_output_format = maybe_read_config("png", "config", "images_output_format")
+video_output_name = maybe_read_config("output_timelapse.mp4", "config", "video_output_name")
+video_codec = maybe_read_config("mp4v", "config", "video_codec")
+video_framerate = int(maybe_read_config(5, "config", "video_framerate"))
+
+async def generate_images(json_array):
     browser = await pyppeteer.launch()
     page = await browser.newPage()
-
-    json_path = input("Input JSON path: ")
-    json_array = json.loads(open(json_path, "r").read())
 
     if not os.path.exists(images_output_directory):
         os.makedirs(images_output_directory)
@@ -41,10 +57,31 @@ def resize_images():
     for image_file in os.listdir(images_output_directory):
         image = PIL.Image.open(os.path.join(images_output_directory, image_file))
         image_resized = image.crop((0, 0, highest_width, highest_height))
-        image_resized.save(images_output_directory + "/" + image_file, "PNG")
+        image_resized.save(images_output_directory + "/" + image_file, images_output_format)
+
+def generate_video():
+    images = sorted(os.listdir(images_output_directory))
+    print("Images:", images)
+
+    frame = cv2.imread(os.path.join(images_output_directory, images[0]))
+    height, width, layers = frame.shape
+
+    video = cv2.VideoWriter(video_output_name, cv2.VideoWriter_fourcc(*video_codec), video_framerate, (width, height))
+
+    for image in images:
+        video.write(cv2.imread(os.path.join(images_output_directory, image)))
+
+    video.release()
+    cv2.destroyAllWindows()
+    print("Video generated successfully!")
+
+json_path = input("Input Timelapse JSON path: ")
+json_array = json.loads(open(json_path, "r").read())
 
 print("Generating images")
-asyncio.run(generate_images())
+asyncio.run(generate_images(json_array))
 
 print("Resizing images")
 resize_images()
+
+generate_video()
