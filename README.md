@@ -2,12 +2,6 @@
 
 Generates timelapse videos using data exported from the [Kanjigrid](https://github.com/Kuuuube/kanjigrid) Anki addon ([AnkiWeb](https://ankiweb.net/shared/info/1610304449)).
 
-## Example
-
-Note: This is highly compressed.
-
-![](./timelapse_example.mp4)
-
 ## Usage
 
 1. Install [dependencies](#dependencies).
@@ -53,3 +47,9 @@ Note: On some Linux distros, this may fail to install some features but still in
 ```
 playwright install
 ```
+
+## Example
+
+Note: This is highly compressed.
+
+https://github.com/user-attachments/assets/c6338085-5f2d-436c-a594-fde2db94850e
