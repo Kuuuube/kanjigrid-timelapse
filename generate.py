@@ -83,12 +83,18 @@ def generate_video():
     cv2.destroyAllWindows()
     print("Video generated successfully!")
 
-json_path = input("Input Timelapse JSON path: ")
-json_array = json.loads(open(json_path, "r").read())
+skip_image_processing = input("Skip image generation (images must already be generated) (y/N): ").lower()
+if skip_image_processing in ["y", "yes"]:
+    print("Generating video")
+    generate_video()
+    sys.exit()
 
 if os.path.exists(images_output_directory):
     shutil.rmtree(images_output_directory)
 os.makedirs(images_output_directory)
+
+json_path = input("Input Timelapse JSON path: ")
+json_array = json.loads(open(json_path, "r").read())
 
 print("Generating images")
 asyncio.run(generate_images(json_array))
