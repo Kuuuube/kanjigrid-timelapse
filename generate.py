@@ -24,12 +24,15 @@ def maybe_read_config(maybe, section, name = None):
 
 images_output_directory = maybe_read_config("images", "config", "images_output_directory")
 images_output_format = maybe_read_config("png", "config", "images_output_format")
+image_width = int(maybe_read_config(1920, "config", "image_width"))
 video_output_name = maybe_read_config("output_timelapse.mp4", "config", "video_output_name")
 video_codec = maybe_read_config("mp4v", "config", "video_codec")
 video_framerate = int(maybe_read_config(5, "config", "video_framerate"))
 
 async def generate_images(json_array):
-    browser = await pyppeteer.launch()
+    browser = await pyppeteer.launch({
+        "defaultViewport": {"width": image_width, "height": 1} #height will grow to whatever size it needs for the screenshot
+    })
     page = await browser.newPage()
 
     json_array_length = len(json_array)
