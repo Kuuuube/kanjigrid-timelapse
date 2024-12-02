@@ -1,5 +1,5 @@
 import asyncio
-import pyppeteer
+import playwright.async_api
 import json
 import os
 import PIL.Image
@@ -31,25 +31,26 @@ video_codec = maybe_read_config("mp4v", "config", "video_codec")
 video_framerate = int(maybe_read_config(5, "config", "video_framerate"))
 
 async def generate_images(json_array):
-    browser = await pyppeteer.launch({
-        "defaultViewport": {"width": image_width, "height": 1} #height will grow to whatever size it needs for the screenshot
-    })
-    page = await browser.newPage()
+    playwright_session = await playwright.async_api.async_playwright().start()
+    browser = await playwright_session.chromium.launch()
+    page = await browser.new_page()
+    await page.set_viewport_size({"width": image_width, "height": 1}) #height will grow to whatever size it needs for the screenshot
 
     json_array_length = len(json_array)
     for i, html_string in enumerate(json_array):
         filename = str(i).zfill(len(str(json_array_length)))
-        await page.setContent(html_string)
+        await page.set_content(html_string)
         if image_style == "dark":
-            await page.addStyleTag({"path":"dark.css"})
+            await page.add_style_tag(path = "dark.css")
         elif image_style == "light":
-            await page.addStyleTag({"path":"light.css"})
-        await page.screenshot({'path': images_output_directory + "/" + filename + "." + images_output_format, 'fullPage': True})
+            await page.add_style_tag(path = "light.css")
+        await page.screenshot(path = images_output_directory + "/" + filename + "." + images_output_format, full_page = True)
         print("Generated " + filename + "/" + str(json_array_length - 1))
         sys.stdout.write("\033[F")
     sys.stdout.write("\n")
 
     await browser.close()
+    await playwright_session.stop()
 
 def resize_images():
     highest_width = 0
