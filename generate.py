@@ -5,6 +5,8 @@ import os
 import PIL.Image
 import cv2
 import configparser
+import sys
+import shutil
 
 def maybe_read_config(maybe, section, name = None):
     try:
@@ -30,22 +32,24 @@ async def generate_images(json_array):
     browser = await pyppeteer.launch()
     page = await browser.newPage()
 
-    if not os.path.exists(images_output_directory):
-        os.makedirs(images_output_directory)
-
     json_array_length = len(json_array)
     for i, html_string in enumerate(json_array):
         filename = str(i).zfill(len(str(json_array_length)))
         await page.setContent(html_string)
         await page.screenshot({'path': images_output_directory + "/" + filename + "." + images_output_format, 'fullPage': True})
         print("Generated " + filename + "/" + str(json_array_length - 1))
+        sys.stdout.write("\033[F")
+    sys.stdout.write("\n")
 
     await browser.close()
 
 def resize_images():
     highest_width = 0
     highest_height = 0
-    for image_file in os.listdir(images_output_directory):
+
+    image_paths = sorted(os.listdir(images_output_directory))
+
+    for image_file in image_paths:
         image = PIL.Image.open(os.path.join(images_output_directory, image_file))
 
         current_width, current_height = image.size
@@ -54,14 +58,18 @@ def resize_images():
         if current_height > highest_height:
             highest_height = current_height
 
-    for image_file in os.listdir(images_output_directory):
+    image_paths_length = len(image_paths)
+    for image_file in image_paths:
         image = PIL.Image.open(os.path.join(images_output_directory, image_file))
         image_resized = image.crop((0, 0, highest_width, highest_height))
         image_resized.save(images_output_directory + "/" + image_file, images_output_format)
+        print("Generated " + image_file.split(".")[0] + "/" + str(image_paths_length - 1))
+        sys.stdout.write("\033[F")
+    sys.stdout.write("\n")
 
 def generate_video():
     images = sorted(os.listdir(images_output_directory))
-    print("Images:", images)
+    print("Found " + str(len(images)) +  " images for video")
 
     frame = cv2.imread(os.path.join(images_output_directory, images[0]))
     height, width, layers = frame.shape
@@ -78,10 +86,15 @@ def generate_video():
 json_path = input("Input Timelapse JSON path: ")
 json_array = json.loads(open(json_path, "r").read())
 
+if os.path.exists(images_output_directory):
+    shutil.rmtree(images_output_directory)
+os.makedirs(images_output_directory)
+
 print("Generating images")
 asyncio.run(generate_images(json_array))
 
 print("Resizing images")
 resize_images()
 
+print("Generating video")
 generate_video()
