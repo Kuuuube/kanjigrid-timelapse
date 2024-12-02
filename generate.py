@@ -25,6 +25,7 @@ def maybe_read_config(maybe, section, name = None):
 images_output_directory = maybe_read_config("images", "config", "images_output_directory")
 images_output_format = maybe_read_config("png", "config", "images_output_format")
 image_width = int(maybe_read_config(1920, "config", "image_width"))
+image_style = maybe_read_config("dark", "config", "image_style")
 video_output_name = maybe_read_config("output_timelapse.mp4", "config", "video_output_name")
 video_codec = maybe_read_config("mp4v", "config", "video_codec")
 video_framerate = int(maybe_read_config(5, "config", "video_framerate"))
@@ -39,6 +40,10 @@ async def generate_images(json_array):
     for i, html_string in enumerate(json_array):
         filename = str(i).zfill(len(str(json_array_length)))
         await page.setContent(html_string)
+        if image_style == "dark":
+            await page.addStyleTag({"path":"dark.css"})
+        elif image_style == "light":
+            await page.addStyleTag({"path":"light.css"})
         await page.screenshot({'path': images_output_directory + "/" + filename + "." + images_output_format, 'fullPage': True})
         print("Generated " + filename + "/" + str(json_array_length - 1))
         sys.stdout.write("\033[F")
