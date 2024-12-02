@@ -92,12 +92,12 @@ if skip_image_processing in ["y", "yes"]:
     generate_video()
     sys.exit()
 
+json_path = input("Input Timelapse JSON path: ")
+json_array = json.loads(open(json_path, "r").read())
+
 if os.path.exists(images_output_directory):
     shutil.rmtree(images_output_directory)
 os.makedirs(images_output_directory)
-
-json_path = input("Input Timelapse JSON path: ")
-json_array = json.loads(open(json_path, "r").read())
 
 print("Generating images")
 asyncio.run(generate_images(json_array))
