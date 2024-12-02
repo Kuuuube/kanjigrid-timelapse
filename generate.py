@@ -68,9 +68,15 @@ def resize_images():
 
     image_paths_length = len(image_paths)
     for image_file in image_paths:
+        bg_color = (0,0,0,0) #transparent
+        if image_style == "dark":
+            bg_color = (44,44,44,255) #2c2c2c
+        elif image_style == "light":
+            bg_color = (255,255,255,255) #ffffff
         image = PIL.Image.open(os.path.join(images_output_directory, image_file))
-        image_resized = image.crop((0, 0, highest_width, highest_height))
-        image_resized.save(images_output_directory + "/" + image_file, images_output_format)
+        new_image = PIL.Image.new("RGBA", size = (highest_width, highest_height), color = bg_color)
+        new_image.paste(image)
+        new_image.save(images_output_directory + "/" + image_file, images_output_format)
         print("Resized " + image_file.split(".")[0] + "/" + str(image_paths_length - 1))
         sys.stdout.write("\033[F")
     sys.stdout.write("\n")
