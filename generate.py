@@ -63,7 +63,7 @@ def resize_images():
         image = PIL.Image.open(os.path.join(images_output_directory, image_file))
         image_resized = image.crop((0, 0, highest_width, highest_height))
         image_resized.save(images_output_directory + "/" + image_file, images_output_format)
-        print("Generated " + image_file.split(".")[0] + "/" + str(image_paths_length - 1))
+        print("Resized " + image_file.split(".")[0] + "/" + str(image_paths_length - 1))
         sys.stdout.write("\033[F")
     sys.stdout.write("\n")
 
