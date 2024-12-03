@@ -7,6 +7,7 @@ import cv2
 import configparser
 import sys
 import shutil
+import re
 
 def maybe_read_config(maybe, section, name = None):
     try:
@@ -30,8 +31,11 @@ video_output_name = maybe_read_config("output_timelapse.mp4", "config", "video_o
 video_codec = maybe_read_config("mp4v", "config", "video_codec")
 video_framerate = int(maybe_read_config(5, "config", "video_framerate"))
 
-def dedupe_consecutive(json_array):
-    return [v for i, v in enumerate(json_array) if i == 0 or v != json_array[i-1]]
+def remove_date(input_string):
+    return re.sub(r"\d+/\d+/\d+ \d+:\d+:\d+", "", input_string)
+
+def dedupe_consecutive(json_array, modifier_func = lambda _: _):
+    return [array_value for i, array_value in enumerate(json_array) if i == 0 or modifier_func(array_value) != modifier_func(json_array[i-1])]
 
 async def generate_images(json_array):
     playwright_session = await playwright.async_api.async_playwright().start()
@@ -112,7 +116,7 @@ json_array = json.loads(open(json_path, "r").read())
 
 dedupe_json_array = input("Remove consecutive duplicates (days where nothing changed) (y/N): ").lower()
 if dedupe_json_array in ["y", "yes"]:
-    json_array = dedupe_consecutive(json_array)
+    json_array = dedupe_consecutive(json_array, remove_date)
 
 if os.path.exists(images_output_directory):
     shutil.rmtree(images_output_directory)
