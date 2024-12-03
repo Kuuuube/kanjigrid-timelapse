@@ -48,6 +48,12 @@ Note: On some Linux distros, this may fail to install some features but still in
 playwright install
 ```
 
+If the above command doesn't work, you may be missing some python path variables. Try this:
+
+```
+python -m playwright install
+```
+
 ## Example
 
 Note: This is highly compressed.
