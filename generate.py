@@ -10,10 +10,12 @@ import shutil
 import re
 import traceback
 
+CONFIG_FILE_PATH = os.path.dirname(__file__) + "/" + "config.ini"
+
 def maybe_read_config(maybe, section, name = None):
     try:
         config = configparser.RawConfigParser()
-        config.read(os.path.dirname(__file__) + "/" + "config.ini", encoding="utf-8")
+        config.read(CONFIG_FILE_PATH, encoding="utf-8")
 
         if name == None:
             return config[section]
@@ -24,6 +26,9 @@ def maybe_read_config(maybe, section, name = None):
         print("Warning! Failed to fetch config value.")
         print(traceback.format_exc().replace("\n", "\\n"))
         return maybe
+
+if not os.path.isfile(CONFIG_FILE_PATH):
+    print("Warning! Config file `config.ini` not found.")
 
 images_output_directory = maybe_read_config("images", "config", "images_output_directory")
 images_output_format = maybe_read_config("png", "config", "images_output_format")
