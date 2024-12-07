@@ -50,9 +50,9 @@ async def generate_images(json_array):
         filename = str(i).zfill(len(str(json_array_length)))
         await page.set_content(html_string)
         if image_style == "dark":
-            await page.add_style_tag(path = "dark.css")
+            await page.add_style_tag(path = os.path.dirname(__file__) + "/" +"dark.css")
         elif image_style == "light":
-            await page.add_style_tag(path = "light.css")
+            await page.add_style_tag(path = os.path.dirname(__file__) + "/" +"light.css")
         await page.screenshot(path = images_output_directory + "/" + filename + "." + images_output_format, full_page = True)
         print("Generated " + filename + "/" + str(json_array_length - 1))
         sys.stdout.write("\033[F")
