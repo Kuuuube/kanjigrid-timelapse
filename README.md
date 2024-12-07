@@ -10,7 +10,9 @@ Generates timelapse videos using data exported from the [Kanjigrid](https://gith
 
 3. (Optional) Edit settings in `config.ini`, `dark.css`, or `light.css`.
 
-4. Run `generate.py` and input your json file path.
+4. Download [Kanjigrid Timelapse](https://github.com/Kuuuube/kanjigrid-timelapse/archive/refs/heads/master.zip) and extract the zip.
+
+5. Run `generate.py` and input your json file path.
 
     If the video didn't turn out how you wanted but the image data is good, answer `y` to the `Skip image generation` prompt when running `generate.py`.
 
