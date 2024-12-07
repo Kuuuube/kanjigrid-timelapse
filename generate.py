@@ -11,6 +11,12 @@ import re
 import traceback
 
 CONFIG_FILE_PATH = os.path.dirname(__file__) + "/" + "config.ini"
+DARK_CSS_FILE_PATH = os.path.dirname(__file__) + "/" +"dark.css"
+LIGHT_CSS_FILE_PATH = os.path.dirname(__file__) + "/" +"light.css"
+
+for file_path in [CONFIG_FILE_PATH, DARK_CSS_FILE_PATH, LIGHT_CSS_FILE_PATH] :
+    if not os.path.isfile(file_path):
+        print("Warning! Config file `" + file_path + "` not found.")
 
 def maybe_read_config(maybe, section, name = None):
     try:
@@ -26,9 +32,6 @@ def maybe_read_config(maybe, section, name = None):
         print("Warning! Failed to fetch config value.")
         print(traceback.format_exc().replace("\n", "\\n"))
         return maybe
-
-if not os.path.isfile(CONFIG_FILE_PATH):
-    print("Warning! Config file `config.ini` not found.")
 
 images_output_directory = maybe_read_config("images", "config", "images_output_directory")
 images_output_format = maybe_read_config("png", "config", "images_output_format")
