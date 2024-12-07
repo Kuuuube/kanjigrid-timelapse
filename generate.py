@@ -8,6 +8,7 @@ import configparser
 import sys
 import shutil
 import re
+import traceback
 
 def maybe_read_config(maybe, section, name = None):
     try:
@@ -19,8 +20,9 @@ def maybe_read_config(maybe, section, name = None):
 
         return config[section][name]
 
-    except Exception as e:
-        print(e)
+    except Exception:
+        print("Warning! Failed to fetch config value.")
+        print(traceback.format_exc().replace("\n", "\\n"))
         return maybe
 
 images_output_directory = maybe_read_config("images", "config", "images_output_directory")
