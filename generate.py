@@ -57,10 +57,10 @@ async def generate_images(json_array):
     for i, html_string in enumerate(json_array):
         filename = str(i).zfill(len(str(json_array_length)))
         await page.set_content(html_string)
-        if image_style == "dark":
-            await page.add_style_tag(path = os.path.dirname(__file__) + "/" +"dark.css")
-        elif image_style == "light":
-            await page.add_style_tag(path = os.path.dirname(__file__) + "/" +"light.css")
+        if image_style == "dark" and os.path.isfile(DARK_CSS_FILE_PATH):
+            await page.add_style_tag(path = DARK_CSS_FILE_PATH)
+        elif image_style == "light" and os.path.isfile(LIGHT_CSS_FILE_PATH):
+            await page.add_style_tag(path = LIGHT_CSS_FILE_PATH)
         await page.screenshot(path = images_output_directory + "/" + filename + "." + images_output_format, full_page = True)
         print("Generated " + filename + "/" + str(json_array_length - 1))
         sys.stdout.write("\033[F")
