@@ -34,6 +34,8 @@ Generates timelapse videos using data exported from the [Kanjigrid](https://gith
 
 ## Dependencies
 
+For advanced users: Linux venv scripts are provided `setup_venv.sh` `run_venv.sh`.
+
 Python 3: [Download link](https://www.python.org/downloads/)
 
 Python `playwright`, `pillow`, and `opencv` modules: To install it, enter the following command in cmd or a terminal:
