@@ -106,6 +106,7 @@ def generate_video():
     frame = cv2.imread(os.path.join(images_output_directory, images[0]))
     height, width, layers = frame.shape
 
+    print("Video saving to " + os.path.abspath(video_output_name))
     video = cv2.VideoWriter(video_output_name, cv2.VideoWriter_fourcc(*video_codec), video_framerate, (width, height))
 
     for image in images:
