@@ -38,6 +38,7 @@ For advanced users: Linux venv scripts are provided `setup_venv.sh` `run_venv.sh
 
 1. Python 3: [Download link](https://www.python.org/downloads/)
 
+    Windows: Make sure to check `Add Python 3.x to PATH` on the first page of the installer.
 
 2. Python `playwright`, `pillow`, and `opencv` modules: To install it, enter the following command in cmd or a terminal:
 
