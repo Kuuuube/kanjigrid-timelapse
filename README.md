@@ -36,11 +36,11 @@ Generates timelapse videos using data exported from the [Kanjigrid](https://gith
 
 For advanced users: Linux venv scripts are provided `setup_venv.sh` `run_venv.sh`.
 
-1. Python 3: [Download link](https://www.python.org/downloads/)
+1. Install Python 3: [Download link](https://www.python.org/downloads/)
 
     Windows: Make sure to check `Add Python 3.x to PATH` on the first page of the installer.
 
-2. Python `playwright`, `pillow`, and `opencv` modules: To install them, enter the following command in cmd or a terminal:
+2. Install the `playwright`, `pillow`, and `opencv` modules by entering the following command in cmd or a terminal:
 
     ```
     pip install playwright pillow opencv-python
