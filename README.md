@@ -40,7 +40,7 @@ For advanced users: Linux venv scripts are provided `setup_venv.sh` `run_venv.sh
 
     Windows: Make sure to check `Add Python 3.x to PATH` on the first page of the installer.
 
-2. Python `playwright`, `pillow`, and `opencv` modules: To install it, enter the following command in cmd or a terminal:
+2. Python `playwright`, `pillow`, and `opencv` modules: To install them, enter the following command in cmd or a terminal:
 
     ```
     pip install playwright pillow opencv-python
