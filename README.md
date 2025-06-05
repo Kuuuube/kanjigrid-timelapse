@@ -36,27 +36,28 @@ Generates timelapse videos using data exported from the [Kanjigrid](https://gith
 
 For advanced users: Linux venv scripts are provided `setup_venv.sh` `run_venv.sh`.
 
-Python 3: [Download link](https://www.python.org/downloads/)
+1. Python 3: [Download link](https://www.python.org/downloads/)
 
-Python `playwright`, `pillow`, and `opencv` modules: To install it, enter the following command in cmd or a terminal:
 
-```
-pip install playwright pillow opencv-python
-```
+2. Python `playwright`, `pillow`, and `opencv` modules: To install it, enter the following command in cmd or a terminal:
 
-Setup playwright dependency:
+    ```
+    pip install playwright pillow opencv-python
+    ```
 
-Note: On some Linux distros, this may fail to install some features but still install the required features for `Kanjigrid Timelapse`. Check whether it works before troubleshooting.
+3. Setup playwright dependency:
 
-```
-playwright install
-```
+    Note: On some Linux distros, this may fail to install some features but still install the required features for `Kanjigrid Timelapse`. Check whether it works before troubleshooting.
 
-If the above command doesn't work, you may be missing some python path variables. Try this:
+    ```
+    playwright install
+    ```
 
-```
-python -m playwright install
-```
+    If the above command doesn't work, you may be missing some python path variables. Try this:
+
+    ```
+    python -m playwright install
+    ```
 
 ## Example
 
